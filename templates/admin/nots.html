@@ -1,0 +1,56 @@
+
+{#<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#}
+{#<html xmlns="http://www.w3.org/1999/xhtml">#}
+{#<head>#}
+{#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+{#<title>Untitled Document</title>#}
+{% extends 'admin/index.html' %}
+{% block body %}
+<style>
+table{
+	border:2px solid black;
+}
+</style>
+
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="">
+  <p>&nbsp;</p>
+  <div align="center">
+  <h2 align="center">View Notifications</h2><br/>
+    <table class="table table-bordered">
+      <tr>
+        <td width="45"><div align="center">Sl No.</div></td>
+        <td width="287"><div align="center">Notifications</div></td>
+        <td width="54"><div align="center">Date</div></td>
+        <td width="47"><div align="center">Time</div></td>
+
+      </tr>
+        {% for i in data %}
+      <tr>
+        <td>&nbsp;{{ loop.index }}</td>
+        <td>{{ i["notification"] }}</td>
+        <td>{{ i ["not_date"] }}</td>
+        <td>{{ i ["not_time"] }}</td>
+          <td width="47" >&nbsp;
+        <p><a href="/edtnots/{{ i['not_id'] }}" class="btn btn-primary">EDIT</a></p><br/>
+        <p><a href="/dltnots/{{ i['not_id'] }}" class="btn btn-danger">DELETE</a></p></td>
+      </tr>
+        {% endfor %}
+    </table>
+  </div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</form>
+</body>
+{#</html>#}
+{% endblock %}

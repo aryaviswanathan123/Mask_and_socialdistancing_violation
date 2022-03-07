@@ -1,0 +1,101 @@
+{#<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#}
+{#<html xmlns="http://www.w3.org/1999/xhtml">#}
+{#<head>#}
+{#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+{#<title>Untitled Document</title>#}
+{% extends 'admin/index.html' %}
+{% block body %}
+<style>
+table{
+	border:2px solid black;
+	border-collapse:collapse;
+	border-spacing:25px;
+	margin-top:30px;
+	margin-bottom:30px;
+	}
+th,td{
+	padding:5px;
+
+	}
+
+</style>
+</head>
+
+<body>
+<form action="/editstaff_post" method="post" enctype="multipart/form-data" name="form1" id="form1">
+ <h2> <p align="center"><strong>Staff Registration</strong></p></h2>
+  <div align="center">
+
+      <input type="hidden" name="sid" value="{{ data['regid'] }}"/>
+    <table width="344" height="111" border="0">
+        <tr>
+            <td>
+            <img src="{{ data['image'] }}">
+            </td>
+        </tr>
+      <tr>
+        <th width="89" scope="row">Name<div id="na" align="center"></div></th>
+        <td width="241"><label for="textfield"></label>
+        <input type="text" name="textfield" id="textfield" value="{{ data['name'] }}"/></td>
+      </tr>
+      <tr>
+        <th scope="row"> Housename</th>
+        <td><label for="textfield2"></label>
+        <input type="text" name="textfield2" id="textfield2" value="{{ data['hname'] }}" /></td>
+      </tr>
+      <tr>
+        <th scope="row">Place</th>
+        <td><label for="textfield0"></label>
+        <input type="text" name="textfield0" id="textfield0" value="{{ data['place'] }} "/></td>
+      </tr>
+
+
+
+
+
+      <tr>
+        <th scope="row">Post</th>
+        <td><label for="textfield3"></label>
+        <input type="text" name="textfield3" id="textfield3" value="{{ data['post'] }}"/></td>
+      </tr>
+      <tr>
+        <th scope="row">Pin</th>
+        <td><label for="textfield4"></label>
+        <input type="text" name="textfield4" id="textfield4" value="{{ data['pin'] }} "/></td>
+      </tr>
+      <tr>
+        <th scope="row">Email</th>
+        <td><label for="textfield5"></label>
+        <input type="text" name="textfield5" id="textfield5" value="{{ data['email'] }}" /></td>
+      </tr>
+      <tr>
+        <th scope="row">Phone no</th>
+        <td><label for="textfield6"></label>
+        <input type="text" name="textfield6" id="textfield6" value="{{ data['phone_no'] }} "/></td>
+      </tr>
+      <tr>
+        <th scope="row">Image</th>
+        <td><label for="fileField"></label>
+        <input type="file" name="fileField" id="fileField" value="{{ data['image'] }}" /></td>
+      </tr>
+        <tr>
+        <th scope="row">Type</th>
+        <td><label for="fileField"></label>
+        <select name="type" >
+            <option>{{ data['type'] }}</option>
+            <option>-----Choose options----</option>
+            <option>Front office staff</option>
+             <option>Staff</option>
+
+        </select></td>
+      </tr>
+      <tr>
+        <th colspan="2" scope="row"><input type="submit" name="button" id="button" value="Update" /></th>
+      </tr>
+    </table>
+  </div>
+  <p>&nbsp;</p>
+</form>
+</body>
+{#</html>#}
+{% endblock %}

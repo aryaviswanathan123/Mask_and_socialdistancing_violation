@@ -1,0 +1,45 @@
+{#<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#}
+{#<html xmlns="http://www.w3.org/1999/xhtml">#}
+{#<head>#}
+{#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+{#<title>Untitled Document</title>#}
+{% extends 'admin/index.html' %}
+{% block body %}
+<style>
+table{
+	border:2px solid black;
+}
+</style>
+
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="/edtnots_post">
+  <p>&nbsp;</p>
+
+
+    <input type="hidden" name="nid" value="{{ data['not_id']  }}"/>
+
+  <div align="center">
+  <h2 align="center">Add Notifications</h2>
+    <table width="463" height="208" border="1">
+
+      <tr>
+          <td>Message</td>
+          <td>
+        <textarea name="textarea" id="textarea2" cols="45" rows="5">{{ data['notification'] }}</textarea></td>
+
+      </tr>
+      <tr>
+          <td></td>
+
+        <td>  <input type="submit" name="button" id="button" value="UPDATE" />
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</form>
+</body>
+{#</html>#}
+{% endblock %}

@@ -1,0 +1,75 @@
+{#<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#}
+{#<html xmlns="http://www.w3.org/1999/xhtml">#}
+{#<head>#}
+{#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+{#<title>Untitled Document</title>#}
+{% extends 'admin/index.html' %}
+{% block body %}
+<style>
+
+</style>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="/vssearch_post">
+  <div align="center">
+  <br /><br />
+    <table class="table table-bordered">
+      <tr>
+        <td><div align="center"></div>
+          <div align="center">Staff Name
+            <input type="text" name="textfield2" id="textfield2" /> 
+            <input type="submit" name="button2" id="button2" value="Go" />
+        </div></td>
+      </tr>
+    </table>
+  </div>
+  <p>&nbsp;</p>
+  <div align="center">
+    <table class=" table table-bordered">
+     
+      <tr>
+        <td width="55" height="75">  <div align="center"><strong>Sl. No.</strong></div></td>
+        <td width="72"><div align="center"><strong>Staff Name</strong></div></td>
+        <td width="83"><div align="center"><strong>Address</strong></div></td>
+{#        <td width="48"><div align="center"><strong>Place</strong></div></td>#}
+{#        <td width="36"><div align="center"><strong>Post</strong></div></td>#}
+{#        <td width="35"><div align="center"><strong>Pin</strong></div></td>#}
+        <td width="39"><div align="center"><strong>Contact</strong></div></td>
+{#        <td width="38"><div align="center"><strong>Ph. no</strong></div></td>#}
+          <td width="39"><div align="center"><strong>Image</strong></div></td>
+          <td width="39"><div align="center"><strong>Type</strong></div></td>
+
+        <td width="46">&nbsp;</td>
+      </tr>
+         {% for i in data %}
+      <tr>
+        <td>&nbsp;{{ loop.index }}</td>
+        <td>{{ i ["name"] }}</td>
+        <td>{{ i ["hname"] }}<br>{{ i ["place"] }}<br>{{ i ["post"] }}<br>{{ i ["pin"] }}</td>
+        <td>&nbsp;{{ i ["email"] }}<br>{{ i ["phone_no"] }}</td>
+          <td><img src="{{ i ["image"] }}" height="100px" width="100px"></td>
+          <td>{{ i ["type"] }}</td>
+
+        <td><p align="center"><a href="/editstaff/{{ i['regid'] }}" class="btn btn-primary">Edit</a></p><br/>
+        <p align="center"><a href="/delstaff/{{ i['regid'] }}" class="btn btn-danger">Delete</a></p></td>
+      </tr>
+        {% endfor %}
+    </table>
+    
+  </div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</form>
+</body>
+{#</html>#}
+{% endblock %}

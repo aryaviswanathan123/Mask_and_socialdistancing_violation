@@ -1,0 +1,61 @@
+{#<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#}
+{#<html xmlns="http://www.w3.org/1999/xhtml">#}
+{#<head>#}
+{#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+{#<title>Untitled Document</title>#}
+{% extends 'admin/index.html' %}
+{% block body %}
+<style>
+table{
+border:2px solid black;
+}
+</style>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="">
+  <p>&nbsp;</p>
+  <h2 align="center">Visitor's List</h2>
+  <div align="center">
+    <table width="523" height="282" border="1">
+      <tr>
+          <th scope="col">Sl. No.</th>
+          <th scope="col">Visitor Id</th>
+          <th scope="col">Staff Name</th>
+        <th scope="col">Type</th>
+          <th scope="col">Image</th>
+        <th scope="col">Date</th>
+        <th scope="col">Time</th>
+      </tr>
+        {% for i in data %}
+      <tr>
+
+          <td>&nbsp;{{ loop.index }}</td>
+          <td>{{ i['vid'] }}</td>
+          <td>{{ i['name'] }}</td>
+          <td>{{ i['v_type'] }}</td>
+          <td>&nbsp;{{ i['v_img'] }}</td>
+          <td>&nbsp;{{ i['v_date'] }}</td>
+          <td>&nbsp;{{ i['v_time'] }}</td>
+
+      </tr>
+        {% endfor %}
+
+    </table>
+  </div>
+  <div align="center"></div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</form>
+</body>
+{#</html>#}
+{% endblock %}
