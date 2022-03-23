@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session
+from flask import Flask,render_template,request,session,jsonify
 from dbconnection import Db
 
 app = Flask(__name__)
@@ -109,6 +109,7 @@ def stfm_post():
 
         d.insert(qry)
         return '''<script>alert('successfully registered!');window.location='stfm'</script>'''
+
 
 
 
@@ -308,11 +309,183 @@ def sdv_search_post():
     return render_template("admin/sdviolation.html", data=res)
 
 
+#-----------------------------------android
 
 
+
+@app.route('/and_login_post',methods=['post'])
+def  and_login_post():
+
+    un = request.form['usnm']
+    pw = request.form['pswd']
+    q="SELECT * FROM login WHERE username='"+un+"' AND `password`='"+pw+"'"
+    d=Db()
+    res=d.selectOne(q)
+    if res is not None:
+
+        if res["type"] == "staff":
+            return jsonify(status="ok",login_id=res["login_id"])
+        else:
+            return jsonify(status="no")
+    else:
+            return jsonify(status="ok")
+
+
+
+@app.route('/and_viewstf_post',methods=['post'])
+def and_viewstf_post():
+    # nm = request.form['textfield']
+    # hn = request.form['textfield2']
+    # pl = request.form['textfield0']
+    # pi = request.form['textfield4']
+    # em = request.form['textfield5']
+    # ph = request.form['textfield6']
+    # im = request.form['fileField']
+    # import time, datetime
+    from encodings.base64_codec import base64_decode
+    # import base64
+
+    # timestr = time.strftime("%Y%m%d-%H%M%S")
+    # print(timestr)
+    # a = base64.b64decode(im)
+    # fh = open("static/staff/" + timestr + ".jpg", "wb")
+    # path = "/static/staff/" + timestr + ".jpg"
+    # fh.write(a)
+    # fh.close()
+    lid=request.form['lid']
+    d = Db()
+    qry = "SELECT * FROM `staff` WHERE login_id='"+lid+"' "
+    res=d.selectOne(qry)
+    return jsonify(status="ok", image=res['image'],name=res['name'],housename=res['hname'],place=res['place'],contact=res['phone_no'],email=res['email'],pin=res['pin'])
+
+
+
+
+
+
+
+
+@app.route('/and_changepassword_post',methods = ['post'])
+def and_changepassword_post():
+    old = request.form['textfield3']
+    cn = request.form['textfield2']
+    lid = request.form['lid']
+    d = Db()
+    q="SELECT * FROM `login` WHERE PASSWORD='"+old+"'"
+    res=d.selectOne(q)
+    if res!=None:
+        qry="UPDATE login SET PASSWORD='"+cn+"' WHERE login_id='"+str(["lid"])+"'"
+
+        re=d.update(qry)
+        return jsonify(status="ok")
+    else:
+        return jsonify(status="Invalid!")
+
+
+
+
+
+@app.route('/and_addfamiliar_post',methods=['post'])
+def and_addfamiliar_post():
+    fn=request.form['afn']
+    fe=request.form['afe']
+    fp=request.form['afp']
+    fr=request.form['afr']
+    fi=request.form['afi']
+
+    import time, datetime
+    from encodings.base64_codec import base64_decode
+    import base64
+
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    print(timestr)
+    a = base64.b64decode(fi)
+    fh = open("C:\\Users\\HP\\PycharmProjects\\untitled\\static\\familiar_persons" + timestr + ".jpg", "wb")
+    path = "/static/familiar_person/" + timestr + ".jpg"
+    fh.write(a)
+    fh.close()
+    d = Db()
+    qry="INSERT INTO `familiar_person`(`fp_name`,`fp_image`,`fp_email`,`fp_ph`,`fp_relation`)VALUES('"+fn+"','"+fi+"','"+fe+"','"+fp+"','"+fr+"')"
+    res=d.insert(qry)
+    return jsonify(status="ok")
+
+
+
+
+@app.route('/and_view_fam_psn_post',methods=['post'])
+def and_view_fam_psn_post():
+    d=Db()
+    qry="SELECT * FROM `familiar_person`"
+    res=d.select(qry)
+    return jsonify(status="ok", users=res)
+
+
+
+
+
+
+
+@app.route('/and_staff_sugs_post',methods=['post'])
+def and_staff_sugs_post():
+    # si=request.form['ssi']
+    # sn=request.form['ssn']
+    # sde=request.form['ssde']
+    # sdt=request.form['ssdt']
+    #
+    # import time, datetime
+    # from encodings.base64_codec import base64_decode
+    # import base64
+    #
+    # timestr = time.strftime("%Y%m%d-%H%M%S")
+    # print(timestr)
+    # a = base64.b64decode(si)
+    # fh = open("static/staff_suggtns/" + timestr + ".jpg", "wb")
+    # path = "/static/staff_suggtns/" + timestr + ".jpg"
+    # fh.write(a)
+    # fh.close()
+
+    d=Db()
+    qry="SELECT `staff_sgtn`.*,`staff`.`name` FROM `staff_sgtn` INNER JOIN `staff` ON `staff`.`login_id`=`staff_sgtn`.`ssg_lid`"
+    res=d.select(qry)
+    return jsonify(status="ok",users=res)
+
+
+
+
+
+
+@app.route('/and_mv_alert_post',methods=['post'])
+def and_mv_alert_post():
+    d = Db()
+    qry = "SELECT `mask_violation`.*,`staff`.`name` FROM `mask_violation` INNER JOIN `staff` ON `staff`.`login_id`=`mask_violation`.`login_id`"
+    res = d.select(qry)
+    return jsonify(status="ok", users=res)
+
+
+
+
+@app.route('/and_view_visitor_post',methods=['post'])
+def and_view_visitor_post():
+    d=Db()
+    qry="SELECT `visitors_log`.*,`staff`.`name` FROM `visitors_log` INNER JOIN `staff` ON `staff`.`login_id`=`visitors_log`.`st_id`"
+    res=d.select(qry)
+    return jsonify(status="ok", users=res)
+
+
+
+
+
+
+
+@app.route('/and_view_nots',methods=['post'])
+def and_view_nots():
+    d=Db()
+    qry="SELECT * FROM `notifications`"
+    res=d.select(qry)
+    return jsonify(status="ok", users=res)
 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
