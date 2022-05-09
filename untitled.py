@@ -4,10 +4,10 @@ from dbconnection import Db
 app = Flask(__name__)
 app.secret_key="kkk"
 
-staticpath="C:\\Users\\HP\\PycharmProjects\\untitled\\static\\"
+staticpath="C:\\Users\\HP\\PycharmProjects\\MES MASK VIOLATIONS\\untitled\\static\\"
 
 
-@app.route('/login')
+@app.route('/')
 def login():
     return render_template("login.html")
 
@@ -57,7 +57,7 @@ def changepassword_post():
             qry="UPDATE login SET PASSWORD='"+cn+"' WHERE login_id='"+str(session["lid"])+"'"
             d=Db()
             res=d.update(qry)
-            return '''<script>alert('password updated!');window.location='/login'</script>'''
+            return '''<script>alert('password updated!');window.location='/'</script>'''
         else:
             return '''<script>alert('error!');window.location='/changepassword'</script>'''
 
@@ -101,7 +101,7 @@ def stfm_post():
         import random
         passw=str(random.randint(0000,9999))
         d = Db()
-        q="INSERT INTO `login`(`username`,`password`,`type`)VALUES('"+em+"','"+passw+"' ,'staff')"
+        q="INSERT INTO `login`(`username`,`password`,`type`)VALUES('"+em+"','"+passw+"' ,'"+ty+"')"
         lid=d.insert(q)
 
         qry = "INSERT INTO `staff`(`login_id`,`name`,`hname`,`place`,`pin`,`post`,`phone_no`,`image`,`email`,`type`)" \
@@ -323,10 +323,9 @@ def  and_login_post():
     res=d.selectOne(q)
     if res is not None:
 
-        if res["type"] == "staff":
-            return jsonify(status="ok",login_id=res["login_id"])
-        else:
-            return jsonify(status="no")
+
+            return jsonify(status="ok",login_id=res["login_id"],type=res["type"])
+
     else:
             return jsonify(status="ok")
 
@@ -400,7 +399,7 @@ def and_addfamiliar_post():
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)
     a = base64.b64decode(fi)
-    fh = open("C:\\Users\\HP\\PycharmProjects\\untitled\\static\\familiar_persons" + timestr + ".jpg", "wb")
+    fh = open(staticpath+"familiar_persons\\" + timestr + ".jpg", "wb")
     path = "/static/familiar_person/" + timestr + ".jpg"
     fh.write(a)
     fh.close()
@@ -459,6 +458,8 @@ def and_mv_alert_post():
     d = Db()
     qry = "SELECT `mask_violation`.*,`staff`.`name` FROM `mask_violation` INNER JOIN `staff` ON `staff`.`login_id`=`mask_violation`.`login_id`"
     res = d.select(qry)
+    print(res)
+
     return jsonify(status="ok", users=res)
 
 
@@ -467,7 +468,7 @@ def and_mv_alert_post():
 @app.route('/and_view_visitor_post',methods=['post'])
 def and_view_visitor_post():
     d=Db()
-    qry="SELECT `visitors_log`.*,`staff`.`name` FROM `visitors_log` INNER JOIN `staff` ON `staff`.`login_id`=`visitors_log`.`st_id`"
+    qry="SELECT `visitors_log`.* FROM `visitors_log`"
     res=d.select(qry)
     return jsonify(status="ok", users=res)
 
@@ -483,9 +484,32 @@ def and_view_nots():
     qry="SELECT * FROM `notifications`"
     res=d.select(qry)
     return jsonify(status="ok", users=res)
+#_-----------------------------------------------------------------------------------normalstaff
+
+@app.route('/and_nsmv_alert_post',methods=['post'])
+def and_nsmv_alert_post():
+    lid=request.form["lid"]
+    d = Db()
+    qry = "SELECT `mask_violation`.*,`staff`.`name` FROM `mask_violation` INNER JOIN `staff` ON `staff`.`login_id`=`mask_violation`.`login_id` where `mask_violation`.`login_id`='"+lid+"' ORDER BY `mask_violation`.`vio_id` DESC"
+    res = d.select(qry)
+    print(res)
+    return jsonify(status="ok", users=res)
 
 
-
-
+@app.route('/and_view_attendance_post',methods=["post"])
+def and_view_attendance_post():
+    lid=request.form["lid"]
+    q="SELECT * FROM `s_attendance` WHERE `s_id`='"+lid+"'"
+    d=Db()
+    res=d.select(q)
+    return jsonify(status="ok",users=res)
+@app.route('/and_send_suggestions',methods=["post"])
+def and_send_suggestions():
+    lid=request.form["lid"]
+    sug=request.form["sug"]
+    q="INSERT INTO `staff_sgtn`(`ssg_lid`,`ssg_des`,`ssg_dt`) VALUES('"+lid+"','"+sug+"',curdate())"
+    d=Db()
+    res=d.insert(q)
+    return jsonify(status="ok")
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
